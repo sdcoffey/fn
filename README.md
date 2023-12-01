@@ -16,11 +16,14 @@ $ go get github.com/sdcoffey/fn`
    1. [Map](#map)
    1. [Reduce](#reduce)
    1. [Zip](#zip)
+   1. [First](#first)
+   1. [Any](#any)
 1. [Numbers](#numbers)
    1. [Sum](#sum)
    1. [Min/Max](#min-and-max)
 1. [Utility](#utilities)
    1. [Must](#must)
+   1. [Zero](#zero) 
 
 
 ## Collections
@@ -76,6 +79,50 @@ values := []int{1, 2, 3}
 fmt.Println(Zip(keys, values)) // map[string]int{ "one": 1, "two": 2, "three": 3 }
 ```
 
+### First
+`First` returns the first value and index of a slice that satisfies a predicate, or the zero value and -1
+
+```go
+values := []int{-2,-1,0,1,2}
+first, index := fn.First(values, func(item, index int) bool {
+	return item > 0
+})
+
+fmt.Printf("%d at index %d", first, index) // 1 at index 3
+```
+
+### Any
+
+`Any` returns true if any value in a slice satisifies a predicate
+
+```go
+ints := []int{2, 3}
+
+fmt.Println(Any(ints, func(item, index int) bool {
+   return item%2 == 1
+})) // true
+
+fmt.Println(Any(ints, func(item, index int) bool {
+    return item == 10
+})) // false
+```
+
+### AnyNonZero
+
+`AnyNonZero` is a helper that returns true if any value in a slice is not the zero value
+
+```go
+fmt.Println(fn.AnyNonZero([]{0, 0, 0}))           // false
+fmt.Println(fn.AnyNonZero([]{"", "", ""}))        // false
+fmt.Println(fn.AnyNonZero([]{"", "abcd", ""}))    // true
+
+type Example struct {
+	Name string
+}
+
+fmt.Println(fn.AnyNonZero([]Example{{Name: "abcd"}, {}})) // true
+```
+
 ## Numbers
 
 ### Min and Max
@@ -119,4 +166,21 @@ func CanFail(shouldFail bool) (string, error) {
 
 val1 := fn.Must(CanFail(true)) // "success"
 val2 := fn.Must(CanFail(false)) // panics
+```
+
+### Zero
+
+`Zero` returns true if the value provided is the zero value for the type
+
+```go
+fmt.Println(fn.Zero(0)) // true
+fmt.Println(fn.Zero(1)) // false
+
+type Example struct {
+    Name string
+}
+
+fmt.Println(fn.Zero(Example{}))             // true
+fmt.Println(fn.Zero(Example{Name:"abcd"}))  // false
+
 ```

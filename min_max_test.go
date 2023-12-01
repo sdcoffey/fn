@@ -1,9 +1,7 @@
 package fn
 
 import (
-	"fmt"
 	"github.com/stretchr/testify/assert"
-	"math"
 	"testing"
 )
 
@@ -18,7 +16,6 @@ func assertMinAs[T Orderable](t *testing.T, items []T, expected T) {
 
 func TestMax_Ints(t *testing.T) {
 	assertMaxAs(t, []int{500, 100, 3000}, 3000)
-	fmt.Println(Sum([]float64{math.Pi, math.Pi}))
 }
 
 func TestMax_Strings(t *testing.T) {

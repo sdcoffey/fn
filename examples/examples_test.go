@@ -96,6 +96,22 @@ func ExampleSelect() {
 	// Output: [2 4 6]
 }
 
+func ExampleSeq() {
+	seq := fn.Seq(0, 50, 5)
+
+	fmt.Println(seq)
+	// Output: [0 5 10 15 20 25 30 35 40 45]
+}
+
+func ExampleGenSeq() {
+	intChan := fn.GenSeq(10, 0, -2)
+
+	for value := range intChan {
+		fmt.Print(value, " ")
+	}
+	// Output: 10 8 6 4 2
+}
+
 func ExampleReject() {
 	allInts := []int{1, 2, 3, 4, 5, 6}
 

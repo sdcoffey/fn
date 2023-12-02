@@ -13,6 +13,7 @@ go get github.com/sdcoffey/fn
 * [Any](#Any)
 * [AnyNonZero](#AnyNonZero)
 * [First](#First)
+* [GenSeq](#GenSeq)
 * [Map](#Map)
 * [Max](#Max)
 * [Min](#Min)
@@ -20,6 +21,7 @@ go get github.com/sdcoffey/fn
 * [Reduce](#Reduce)
 * [Reject](#Reject)
 * [Select](#Select)
+* [Seq](#Seq)
 * [Sum](#Sum)
 * [Zero](#Zero)
 * [Zip](#Zip)
@@ -73,6 +75,21 @@ func ExampleFirst() {
 	// Output:
 	// Value found: 2
 	// First positive value: 1
+}
+```
+
+### GenSeq
+GenSeq returns a chan that yields integers from [start, end), incremented by
+inc
+
+```go
+func ExampleGenSeq() {
+	intChan := fn.GenSeq(10, 0, -2)
+
+	for value := range intChan {
+		fmt.Print(value, " ")
+	}
+	// Output: 10 8 6 4 2
 }
 ```
 
@@ -183,6 +200,18 @@ func ExampleSelect() {
 
 	fmt.Println(evenNumbers)
 	// Output: [2 4 6]
+}
+```
+
+### Seq
+Seq Returns a slice of integers from [start, end), incremented by inc
+
+```go
+func ExampleSeq() {
+	seq := fn.Seq(0, 50, 5)
+
+	fmt.Println(seq)
+	// Output: [0 5 10 15 20 25 30 35 40 45]
 }
 ```
 

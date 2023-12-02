@@ -1,186 +1,240 @@
-# Fn
+# fn
 
-Fn is a collection of functional golang utilities meant to assist with common
-slice and map operations
+Package fn is a collection of functional golang utilities meant to assist with
+common slice and map operations, as well as provide some better dexterity around
+error handling.
 
 ## Installation
 
-```bash
-$ go get github.com/sdcoffey/fn`
 ```
-
-## Reference
-
-1. [Collections](#collections)
-   1. [Select/Reject](#select-and-reject)
-   1. [Map](#map)
-   1. [Reduce](#reduce)
-   1. [Zip](#zip)
-   1. [First](#first)
-   1. [Any](#any)
-1. [Numbers](#numbers)
-   1. [Sum](#sum)
-   1. [Min/Max](#min-and-max)
-1. [Utility](#utilities)
-   1. [Must](#must)
-   1. [Zero](#zero) 
-
-
-## Collections
-
-### Select and Reject
-
-`Select` and `Reject` reduce a slice to only values that either satisfy or do not
-satisfy a predicate.
-
-```go
-allInts := []int{1,2,3,4,5,6}
-
-func isEven(number int, index int) bool {
-    return item % 2 == 0
-}
-
-evens := fn.Select(allInts, isEven) // [2, 4, 6]
-odds := fn.Reject(allInts, isEven)  // [1, 3, 5]
+go get github.com/sdcoffey/fn
 ```
+## In this package
+* [Any](#Any)
+* [AnyNonZero](#AnyNonZero)
+* [First](#First)
+* [Map](#Map)
+* [Max](#Max)
+* [Min](#Min)
+* [Must](#Must)
+* [Reduce](#Reduce)
+* [Reject](#Reject)
+* [Select](#Select)
+* [Sum](#Sum)
+* [Zero](#Zero)
+* [Zip](#Zip)
 
-### Map
-
-`Map` transforms values in a slice
-```go
-ints := []int{1,2,3}
-strings := fn.Map(ints, func(number int, index int) string {
-    return strconv.Iota(number)
-})
-
-fmt.Println(strings) // ["1", "2", "3"]
-```
-
-### Reduce
-
-`Reduce` allows you to condense a slice into one end value
-
-```go
-combined := fn.Reduce([]string{"a", "b", "c"}, func(result, item string, index int) string {
-	return result + item
-}, "")
-
-fmt.Println(combined) // "abc"
-```
-
-### Zip
-
-`Zip` returns a set of key and value slices translated into a amp
-
-```go
-keys := []string{"one", "two", "three"}
-values := []int{1, 2, 3}
-
-fmt.Println(Zip(keys, values)) // map[string]int{ "one": 1, "two": 2, "three": 3 }
-```
-
-### First
-`First` returns the first value and index of a slice that satisfies a predicate, or the zero value and -1
-
-```go
-values := []int{-2,-1,0,1,2}
-first, index := fn.First(values, func(item, index int) bool {
-	return item > 0
-})
-
-fmt.Printf("%d at index %d", first, index) // 1 at index 3
-```
 
 ### Any
-
-`Any` returns true if any value in a slice satisifies a predicate
+Any returns true if any item in the slice satisfies the predicate
 
 ```go
-ints := []int{2, 3}
+func ExampleAny() {
+	negativeInts := []int{-1, -2, -3}
+	anyPositive := fn.Any(negativeInts, func(item int, index int) bool {
+		return item > 0
+	})
 
-fmt.Println(Any(ints, func(item, index int) bool {
-   return item%2 == 1
-})) // true
-
-fmt.Println(Any(ints, func(item, index int) bool {
-    return item == 10
-})) // false
+	fmt.Println(anyPositive)
+	// Output: false
+}
 ```
 
 ### AnyNonZero
-
-`AnyNonZero` is a helper that returns true if any value in a slice is not the zero value
+AnyNonZero is a helper function that returns true if any item in the slice
+is not the zero value for its type
 
 ```go
-fmt.Println(fn.AnyNonZero([]{0, 0, 0}))           // false
-fmt.Println(fn.AnyNonZero([]{"", "", ""}))        // false
-fmt.Println(fn.AnyNonZero([]{"", "abcd", ""}))    // true
+func ExampleAnyNonZero() {
+	nonZeroStrings := []string{"one", "", "", "four"}
+	fmt.Println(fn.AnyNonZero(nonZeroStrings))
 
-type Example struct {
-	Name string
+	zeroStrings := []string{"", ""}
+	fmt.Println(fn.AnyNonZero(zeroStrings))
+	// Output:
+	// true
+	// false
 }
-
-fmt.Println(fn.AnyNonZero([]Example{{Name: "abcd"}, {}})) // true
 ```
 
-## Numbers
-
-### Min and Max
-
-`Max` returns the max of some orderable slice
-`Min` returns the min of some orderable slice
+### First
+First will return the first value that satisfies the predicate, and the
+index at which the value was found or -1 if it was not found
 
 ```go
-strings := []string{"one", "two", "three"}
-ints := []int{1, 2, 3}
+func ExampleFirst() {
+	sequence := []int{-1, 0, 1, 2}
+	firstPositive, found := fn.First(sequence, func(item int, index int) bool {
+		return item > 0
+	})
 
-fmt.Println(fn.Max(strings...))    // "two"
-fmt.Println(fn.Max(ints...))       // 3
+	fmt.Println("Value found:", found)
+	fmt.Println("First positive value:", firstPositive)
+	// Output:
+	// Value found: 2
+	// First positive value: 1
+}
+```
 
-fmt.Println(fn.Min(strings...))    // "one
-fmt.Println(fn.Min(ints...))       // 1
+### Map
+Map transforms allows you to transform all values into a slice of other
+values. The original slice is not modified.
+
+```go
+func ExampleMap() {
+	ints := []int{1, 2, 3}
+	doubled := fn.Map(ints, func(item int, index int) int {
+		return item * 2
+	})
+
+	fmt.Println(doubled)
+	// Output: [2 4 6]
+}
+```
+
+### Max
+Max returns the maximum value in some orderable set, or the zero value of
+the set type if it has len 0
+
+```go
+func ExampleMax() {
+	fmt.Println(fn.Max(1, 2, 100, -1))
+	// Output: 100
+}
+```
+
+### Min
+Min returns the minimum value in some orderable set, or the zero value of
+the set type if it has len 0
+
+```go
+func ExampleMin() {
+	fmt.Println(fn.Min(-100, -300, 3, 100))
+	// Output: -300
+}
+```
+
+### Must
+Must allows you to return one value from a function that would normally
+return a value and an error. If the error is present, Must will panic
+
+```go
+func ExampleMust() {
+	canFail := func(shouldFail bool) (string, error) {
+		if shouldFail {
+			return "", fmt.Errorf("error")
+		}
+		return "success", nil
+	}
+
+	value := fn.Must(canFail(false))
+
+	fmt.Println(value)
+	// Output: success
+}
+```
+
+### Reduce
+Reduce condenses a collection into an accumulated value which is the result
+of running each element in the collection though `reducer`, where each
+successive iteration is supplied the return value of the previous.
+
+```go
+func ExampleReduce() {
+	combined := fn.Reduce([]string{"a", "b", "c"}, func(result, item string, index int) string {
+		return result + item
+	}, "")
+
+	fmt.Println(combined)
+	// Output: abc
+}
+```
+
+### Reject
+Reject reduces a slice to only values for which `rejector` returns false
+
+```go
+func ExampleReject() {
+	allInts := []int{1, 2, 3, 4, 5, 6}
+
+	isEven := func(number int, index int) bool {
+		return number%2 == 0
+	}
+
+	oddNumbers := fn.Reject(allInts, isEven)
+
+	fmt.Println(oddNumbers)
+	// Output: [1 3 5]
+}
+```
+
+### Select
+Select reduces a slice to only values for which `selector` returns true
+
+```go
+func ExampleSelect() {
+	allInts := []int{1, 2, 3, 4, 5, 6}
+
+	isEven := func(number int, index int) bool {
+		return number%2 == 0
+	}
+
+	evenNumbers := fn.Select(allInts, isEven)
+
+	fmt.Println(evenNumbers)
+	// Output: [2 4 6]
+}
 ```
 
 ### Sum
-
-`Sum` returns the Sum of some number value
-
-```go
-fmt.Println(fn.Sum([]int{1,2,3}))               // 6
-fmt.Println(Sum([]float64{math.Pi, math.Pi}))   // 6.283185307179586
-```
-
-## Utilities
-
-### Must
-
-Get the value from an error-returning method, or panic
+Sum returns the summed value of values in the slice
 
 ```go
-func CanFail(shouldFail bool) (string, error) {
-    if shouldFail {
-        return "", fmt.Errorf("failed")
-    }
-    return "success", nil
+func ExampleSum() {
+	fmt.Println(fn.Sum([]int{1, 2, 3}))
+	fmt.Println(fn.Sum([]float64{math.Pi, math.Pi}))
+	// Output:
+	// 6
+	// 6.283185307179586
 }
-
-val1 := fn.Must(CanFail(true)) // "success"
-val2 := fn.Must(CanFail(false)) // panics
 ```
 
 ### Zero
-
-`Zero` returns true if the value provided is the zero value for the type
+Zero returns whether the comparable value passed in is the zero value for
+its type
 
 ```go
-fmt.Println(fn.Zero(0)) // true
-fmt.Println(fn.Zero(1)) // false
+func ExampleZero() {
+	fmt.Println(fn.Zero(""))
+	fmt.Println(fn.Zero(1))
 
-type Example struct {
-    Name string
+	type Example struct {
+		Name string
+	}
+
+	fmt.Println(fn.Zero(Example{}))
+	fmt.Println(fn.Zero(Example{Name: "abcd"}))
+
+	// Output:
+	// true
+	// false
+	// true
+	// false
 }
-
-fmt.Println(fn.Zero(Example{}))             // true
-fmt.Println(fn.Zero(Example{Name:"abcd"}))  // false
-
 ```
+
+### Zip
+Zip takes two slices and aggregates them in to a map. If `keys` and `values`
+are not the same length, Zip will use the shorter of the two to determine
+the length of the resulting map
+
+```go
+func ExampleZip() {
+	keys := []string{"one", "two", "three"}
+	values := []int{1, 2, 3}
+
+	fmt.Println(fn.Zip(keys, values))
+	// Output: map[one:1 three:3 two:2]
+}
+```
+

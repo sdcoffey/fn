@@ -1,9 +1,11 @@
 package fn
 
+// Number is a union of all number-ish types
 type Number interface {
 	~int | ~int8 | ~int16 | ~int32 | ~int64 | ~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~float32 | ~float64
 }
 
+// Sum returns the summed value of values in the slice
 func Sum[T Number](numbers []T) (result T) {
 	return Reduce(numbers, func(sum T, input T, i int) T {
 		return sum + input

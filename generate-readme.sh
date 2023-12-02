@@ -1,5 +1,7 @@
 set -eof pipefail
 
+go test ./examples
+
 cp examples/examples_test.go tmp/examples.go
 
 go build -o ./bin/dochelp ./cmd/dochelp/main.go

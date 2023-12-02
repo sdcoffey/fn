@@ -13,6 +13,7 @@ go get github.com/sdcoffey/fn
 * [Any](#Any)
 * [AnyNonZero](#AnyNonZero)
 * [First](#First)
+* [Flatten](#Flatten)
 * [GenSeq](#GenSeq)
 * [Map](#Map)
 * [Max](#Max)
@@ -75,6 +76,19 @@ func ExampleFirst() {
 	// Output:
 	// Value found: 2
 	// First positive value: 1
+}
+```
+
+### Flatten
+Flatten takes a two-dimensional array of T and flattens it down to one
+dimension, preserving the original order
+
+```go
+func ExampleFlatten() {
+	items := [][]string{{"one"}, {"two", "three"}, {"four"}}
+
+	fmt.Println(fn.Flatten(items))
+	// Output: [one two three four]
 }
 ```
 

@@ -40,6 +40,13 @@ func ExampleFirst() {
 	// First positive value: 1
 }
 
+func ExampleFlatten() {
+	items := [][]string{{"one"}, {"two", "three"}, {"four"}}
+
+	fmt.Println(fn.Flatten(items))
+	// Output: [one two three four]
+}
+
 func ExampleMap() {
 	ints := []int{1, 2, 3}
 	doubled := fn.Map(ints, func(item int, index int) int {

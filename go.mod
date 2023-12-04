@@ -1,4 +1,4 @@
-module fn
+module github.com/sdcoffey/fn
 
 go 1.18
 

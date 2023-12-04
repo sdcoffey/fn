@@ -140,24 +140,6 @@ func ExampleSum() {
 	// 6.283185307179586
 }
 
-func ExampleZero() {
-	fmt.Println(fn.Zero(""))
-	fmt.Println(fn.Zero(1))
-
-	type Example struct {
-		Name string
-	}
-
-	fmt.Println(fn.Zero(Example{}))
-	fmt.Println(fn.Zero(Example{Name: "abcd"}))
-
-	// Output:
-	// true
-	// false
-	// true
-	// false
-}
-
 func ExampleZip() {
 	keys := []string{"one", "two", "three"}
 	values := []int{1, 2, 3}

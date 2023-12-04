@@ -24,7 +24,6 @@ go get github.com/sdcoffey/fn
 * [Select](#Select)
 * [Seq](#Seq)
 * [Sum](#Sum)
-* [Zero](#Zero)
 * [Zip](#Zip)
 
 
@@ -239,30 +238,6 @@ func ExampleSum() {
 	// Output:
 	// 6
 	// 6.283185307179586
-}
-```
-
-### Zero
-Zero returns whether the comparable value passed in is the zero value for
-its type
-
-```go
-func ExampleZero() {
-	fmt.Println(fn.Zero(""))
-	fmt.Println(fn.Zero(1))
-
-	type Example struct {
-		Name string
-	}
-
-	fmt.Println(fn.Zero(Example{}))
-	fmt.Println(fn.Zero(Example{Name: "abcd"}))
-
-	// Output:
-	// true
-	// false
-	// true
-	// false
 }
 ```
 

@@ -43,6 +43,16 @@ func ExampleChunkWhile() {
 	// Output: [[1 2] [4 5] [7]]
 }
 
+func ExampleEach() {
+	fn.Each([]string{"a", "b", "c"}, func(item string, index int) {
+		fmt.Println(item, index)
+	})
+	// Output:
+	// a 0
+	// b 1
+	// c 2
+}
+
 func ExampleFirst() {
 	sequence := []int{-1, 0, 1, 2}
 	firstPositive, found := fn.First(sequence, func(item int, index int) bool {

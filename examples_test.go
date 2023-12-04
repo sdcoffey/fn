@@ -1,15 +1,14 @@
-package examples
+package fn
 
 import (
 	"errors"
 	"fmt"
-	"github.com/sdcoffey/fn"
 	"math"
 )
 
 func ExampleAny() {
 	negativeInts := []int{-1, -2, -3}
-	anyPositive := fn.Any(negativeInts, func(item int, index int) bool {
+	anyPositive := Any(negativeInts, func(item int, index int) bool {
 		return item > 0
 	})
 
@@ -19,10 +18,10 @@ func ExampleAny() {
 
 func ExampleAnyNonZero() {
 	nonZeroStrings := []string{"one", "", "", "four"}
-	fmt.Println(fn.AnyNonZero(nonZeroStrings))
+	fmt.Println(AnyNonZero(nonZeroStrings))
 
 	zeroStrings := []string{"", ""}
-	fmt.Println(fn.AnyNonZero(zeroStrings))
+	fmt.Println(AnyNonZero(zeroStrings))
 	// Output:
 	// true
 	// false
@@ -31,14 +30,14 @@ func ExampleAnyNonZero() {
 func ExampleChunk() {
 	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
-	fmt.Println(fn.Chunk(ints, 3))
+	fmt.Println(Chunk(ints, 3))
 	// Output: [[1 2 3] [4 5 6] [7 8 9]]
 }
 
 func ExampleChunkWhile() {
 	ints := []int{1, 2, 4, 5, 7}
 
-	fmt.Println(fn.ChunkWhile(ints, func(eltBefore, eltAfter int) bool {
+	fmt.Println(ChunkWhile(ints, func(eltBefore, eltAfter int) bool {
 		return eltBefore+1 == eltAfter
 	}))
 	// Output: [[1 2] [4 5] [7]]
@@ -47,19 +46,19 @@ func ExampleChunkWhile() {
 func ExampleCompactZero() {
 	ints := []int{0, 1, 2, 3, 0, 5}
 
-	fmt.Println(fn.CompactZero(ints))
+	fmt.Println(CompactZero(ints))
 	// Output: [1 2 3 5]
 }
 
 func ExampleCompactNil() {
 	errs := []error{nil, errors.New("example-error 1"), nil, errors.New("example-error 2")}
 
-	fmt.Println(fn.CompactNil(errs))
+	fmt.Println(CompactNil(errs))
 	// Output: [example-error 1 example-error 2]
 }
 
 func ExampleEach() {
-	fn.Each([]string{"a", "b", "c"}, func(item string, index int) {
+	Each([]string{"a", "b", "c"}, func(item string, index int) {
 		fmt.Println(item, index)
 	})
 	// Output:
@@ -70,11 +69,11 @@ func ExampleEach() {
 
 func ExampleFirst() {
 	sequence := []int{-1, 0, 1, 2}
-	firstPositive, index := fn.First(sequence, func(item int, index int) bool {
+	firstPositive, index := First(sequence, func(item int, index int) bool {
 		return item > 0
 	})
 
-	ten, tenIndex := fn.First(sequence, func(item int, index int) bool {
+	ten, tenIndex := First(sequence, func(item int, index int) bool {
 		return item == 10
 	})
 
@@ -88,13 +87,13 @@ func ExampleFirst() {
 func ExampleFlatten() {
 	items := [][]string{{"one"}, {"two", "three"}, {"four"}}
 
-	fmt.Println(fn.Flatten(items))
+	fmt.Println(Flatten(items))
 	// Output: [one two three four]
 }
 
 func ExampleMap() {
 	ints := []int{1, 2, 3}
-	doubled := fn.Map(ints, func(item int, index int) int {
+	doubled := Map(ints, func(item int, index int) int {
 		return item * 2
 	})
 
@@ -110,25 +109,25 @@ func ExampleMust() {
 		return "success", nil
 	}
 
-	value := fn.Must(canFail(false))
+	value := Must(canFail(false))
 
 	fmt.Println(value)
 	// Output: success
 }
 
 func ExampleMax() {
-	fmt.Println(fn.Max(1, 2, 100, -1))
+	fmt.Println(Max(1, 2, 100, -1))
 	// Output: 100
 }
 
 func ExampleMin() {
-	fmt.Println(fn.Min(-100, -300, 3, 100))
+	fmt.Println(Min(-100, -300, 3, 100))
 	// Output: -300
 }
 
 func ExamplePartition() {
-	values := fn.Seq(0, 10, 1)
-	evens, odds := fn.Partition(values, func(item, index int) bool {
+	values := Seq(0, 10, 1)
+	evens, odds := Partition(values, func(item, index int) bool {
 		return item%2 == 0
 	})
 
@@ -140,7 +139,7 @@ func ExamplePartition() {
 }
 
 func ExampleReduce() {
-	combined := fn.Reduce([]string{"a", "b", "c"}, func(result, item string, index int) string {
+	combined := Reduce([]string{"a", "b", "c"}, func(result, item string, index int) string {
 		return result + item
 	}, "")
 
@@ -155,14 +154,14 @@ func ExampleSelect() {
 		return number%2 == 0
 	}
 
-	evenNumbers := fn.Select(allInts, isEven)
+	evenNumbers := Select(allInts, isEven)
 
 	fmt.Println(evenNumbers)
 	// Output: [2 4 6]
 }
 
 func ExampleSeq() {
-	seq := fn.Seq(0, 50, 5)
+	seq := Seq(0, 50, 5)
 
 	fmt.Println(seq)
 	// Output: [0 5 10 15 20 25 30 35 40 45]
@@ -175,15 +174,15 @@ func ExampleReject() {
 		return number%2 == 0
 	}
 
-	oddNumbers := fn.Reject(allInts, isEven)
+	oddNumbers := Reject(allInts, isEven)
 
 	fmt.Println(oddNumbers)
 	// Output: [1 3 5]
 }
 
 func ExampleSum() {
-	fmt.Println(fn.Sum([]int{1, 2, 3}))
-	fmt.Println(fn.Sum([]float64{math.Pi, math.Pi}))
+	fmt.Println(Sum([]int{1, 2, 3}))
+	fmt.Println(Sum([]float64{math.Pi, math.Pi}))
 	// Output:
 	// 6
 	// 6.283185307179586
@@ -193,6 +192,6 @@ func ExampleZip() {
 	keys := []string{"one", "two", "three"}
 	values := []int{1, 2, 3}
 
-	fmt.Println(fn.Zip(keys, values))
+	fmt.Println(Zip(keys, values))
 	// Output: map[one:1 three:3 two:2]
 }

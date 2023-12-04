@@ -14,6 +14,8 @@ go get github.com/sdcoffey/fn
 * [AnyNonZero](#AnyNonZero)
 * [Chunk](#Chunk)
 * [ChunkWhile](#ChunkWhile)
+* [CompactNil](#CompactNil)
+* [CompactZero](#CompactZero)
 * [Each](#Each)
 * [First](#First)
 * [Flatten](#Flatten)
@@ -91,6 +93,30 @@ func ExampleChunkWhile() {
 		return eltBefore+1 == eltAfter
 	}))
 	// Output: [[1 2] [4 5] [7]]
+}
+```
+
+### CompactNil
+CompactNil returns a new slice with all nil items removed.
+
+```go
+func ExampleCompactNil() {
+	errs := []error{nil, errors.New("example-error 1"), nil, errors.New("example-error 2")}
+
+	fmt.Println(fn.CompactNil(errs))
+	// Output: [example-error 1 example-error 2]
+}
+```
+
+### CompactZero
+CompactZero returns a new slice with all zero items removed.
+
+```go
+func ExampleCompactZero() {
+	ints := []int{0, 1, 2, 3, 0, 5}
+
+	fmt.Println(fn.CompactZero(ints))
+	// Output: [1 2 3 5]
 }
 ```
 

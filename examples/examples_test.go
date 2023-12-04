@@ -1,6 +1,7 @@
 package examples
 
 import (
+	"errors"
 	"fmt"
 	"fn"
 	"math"
@@ -41,6 +42,20 @@ func ExampleChunkWhile() {
 		return eltBefore+1 == eltAfter
 	}))
 	// Output: [[1 2] [4 5] [7]]
+}
+
+func ExampleCompactZero() {
+	ints := []int{0, 1, 2, 3, 0, 5}
+
+	fmt.Println(fn.CompactZero(ints))
+	// Output: [1 2 3 5]
+}
+
+func ExampleCompactNil() {
+	errs := []error{nil, errors.New("example-error 1"), nil, errors.New("example-error 2")}
+
+	fmt.Println(fn.CompactNil(errs))
+	// Output: [example-error 1 example-error 2]
 }
 
 func ExampleEach() {

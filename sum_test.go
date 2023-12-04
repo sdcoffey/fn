@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func assertSumAs[T Number](t *testing.T, slc []T, expected T) {
+func assertSumAs[T number](t *testing.T, slc []T, expected T) {
 	assert.Equal(t, expected, Sum[T](slc))
 }
 
@@ -55,4 +55,16 @@ func TestSum_Float32(t *testing.T) {
 
 func TestSum_Float64(t *testing.T) {
 	assertSumAs(t, []float64{10, 20, 30}, 60)
+}
+
+func TestSum_Complex64(t *testing.T) {
+	assertSumAs(t, []complex64{10, 20, 30}, 60)
+}
+
+func TestSum_Complex128(t *testing.T) {
+	assertSumAs(t, []complex128{10, 20, 30}, 60)
+}
+
+func TestSum_uintptr(t *testing.T) {
+	assertSumAs(t, []uintptr{10, 20, 30}, 60)
 }

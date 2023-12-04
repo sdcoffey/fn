@@ -1,6 +1,6 @@
 package fn
 
-// Seq Returns a slice of integers from [start, end), incremented by inc
+// Seq Returns a slice of integers from `[start, end)`, incremented by `inc`.
 func Seq(start, end, inc int) []int {
 	if (end < start && inc > 0) || (start < end && inc < 0) || inc == 0 {
 		return []int{}
@@ -18,8 +18,8 @@ func Seq(start, end, inc int) []int {
 	return values
 }
 
-// GenSeq returns a chan that yields integers from [start, end), incremented by inc
-func GenSeq(start, end, inc int) <-chan int {
+// genSeq returns a chan that yields integers from `[start, end)`, incremented by `inc`.
+func genSeq(start, end, inc int) <-chan int {
 	outputChan := make(chan int)
 
 	go func() {

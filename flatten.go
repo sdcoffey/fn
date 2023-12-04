@@ -1,6 +1,6 @@
 package fn
 
-// Flatten takes a two-dimensional array of T and flattens it down to one dimension, preserving the original order
+// Flatten takes a 2D slice `[][]T` and flattens it to one dimension, preserving the original order.
 func Flatten[T any](slice [][]T) []T {
 	result := make([]T, 0, len(slice))
 

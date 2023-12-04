@@ -3,7 +3,7 @@ package examples
 import (
 	"errors"
 	"fmt"
-	"fn"
+	"github.com/sdcoffey/fn"
 	"math"
 )
 
@@ -70,15 +70,19 @@ func ExampleEach() {
 
 func ExampleFirst() {
 	sequence := []int{-1, 0, 1, 2}
-	firstPositive, found := fn.First(sequence, func(item int, index int) bool {
+	firstPositive, index := fn.First(sequence, func(item int, index int) bool {
 		return item > 0
 	})
 
-	fmt.Println("Value found:", found)
-	fmt.Println("First positive value:", firstPositive)
+	ten, tenIndex := fn.First(sequence, func(item int, index int) bool {
+		return item == 10
+	})
+
+	fmt.Printf("value %d at index %d\n", firstPositive, index)
+	fmt.Printf("value %d at index %d\n", ten, tenIndex)
 	// Output:
-	// Value found: 2
-	// First positive value: 1
+	// value 1 at index 2
+	// value 0 at index -1
 }
 
 func ExampleFlatten() {
@@ -162,15 +166,6 @@ func ExampleSeq() {
 
 	fmt.Println(seq)
 	// Output: [0 5 10 15 20 25 30 35 40 45]
-}
-
-func ExampleGenSeq() {
-	intChan := fn.GenSeq(10, 0, -2)
-
-	for value := range intChan {
-		fmt.Print(value, " ")
-	}
-	// Output: 10 8 6 4 2
 }
 
 func ExampleReject() {

@@ -1,5 +1,6 @@
 set -eof pipefail
 
+go test .
 go test ./examples
 
 cp examples/examples_test.go tmp/examples.go

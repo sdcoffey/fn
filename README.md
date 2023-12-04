@@ -12,6 +12,8 @@ go get github.com/sdcoffey/fn
 ## In this package
 * [Any](#Any)
 * [AnyNonZero](#AnyNonZero)
+* [Chunk](#Chunk)
+* [ChunkWhile](#ChunkWhile)
 * [First](#First)
 * [Flatten](#Flatten)
 * [GenSeq](#GenSeq)
@@ -56,6 +58,37 @@ func ExampleAnyNonZero() {
 	// Output:
 	// true
 	// false
+}
+```
+
+### Chunk
+Chunk takes a slice of T and returns a slice of slices of T, each of length
+chunkSize. If len(items) % chunkSize != 0, the last slice will be shorter
+than chunkSize.
+
+```go
+func ExampleChunk() {
+	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	fmt.Println(fn.Chunk(ints, 3))
+	// Output: [[1 2 3] [4 5 6] [7 8 9]]
+}
+```
+
+### ChunkWhile
+ChunkWhile takes a slice of T and returns a slice of slices of T, each of
+which is a contiguous chunk of items for which `chunker` returns true.
+`chunker` is called with the item before and the item after the current
+item.
+
+```go
+func ExampleChunkWhile() {
+	ints := []int{1, 2, 4, 5, 7}
+
+	fmt.Println(fn.ChunkWhile(ints, func(eltBefore, eltAfter int) bool {
+		return eltBefore+1 == eltAfter
+	}))
+	// Output: [[1 2] [4 5] [7]]
 }
 ```
 

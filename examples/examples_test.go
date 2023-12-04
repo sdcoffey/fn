@@ -27,6 +27,22 @@ func ExampleAnyNonZero() {
 	// false
 }
 
+func ExampleChunk() {
+	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
+
+	fmt.Println(fn.Chunk(ints, 3))
+	// Output: [[1 2 3] [4 5 6] [7 8 9]]
+}
+
+func ExampleChunkWhile() {
+	ints := []int{1, 2, 4, 5, 7}
+
+	fmt.Println(fn.ChunkWhile(ints, func(eltBefore, eltAfter int) bool {
+		return eltBefore+1 == eltAfter
+	}))
+	// Output: [[1 2] [4 5] [7]]
+}
+
 func ExampleFirst() {
 	sequence := []int{-1, 0, 1, 2}
 	firstPositive, found := fn.First(sequence, func(item int, index int) bool {

@@ -14,6 +14,7 @@ go get github.com/sdcoffey/fn
 * [AnyNonZero](#AnyNonZero)
 * [Chunk](#Chunk)
 * [ChunkWhile](#ChunkWhile)
+* [Each](#Each)
 * [First](#First)
 * [Flatten](#Flatten)
 * [GenSeq](#GenSeq)
@@ -21,6 +22,7 @@ go get github.com/sdcoffey/fn
 * [Max](#Max)
 * [Min](#Min)
 * [Must](#Must)
+* [Partition](#Partition)
 * [Reduce](#Reduce)
 * [Reject](#Reject)
 * [Select](#Select)
@@ -89,6 +91,20 @@ func ExampleChunkWhile() {
 		return eltBefore+1 == eltAfter
 	}))
 	// Output: [[1 2] [4 5] [7]]
+}
+```
+
+### Each
+
+```go
+func ExampleEach() {
+	fn.Each([]string{"a", "b", "c"}, func(item string, index int) {
+		fmt.Println(item, index)
+	})
+	// Output:
+	// a 0
+	// b 1
+	// c 2
 }
 ```
 
@@ -194,6 +210,27 @@ func ExampleMust() {
 
 	fmt.Println(value)
 	// Output: success
+}
+```
+
+### Partition
+Partition takes a slice of T and a predicate function and returns two slices
+of T. The first slice contains all the items that passed the predicate
+function, and the second slice contains all the items that failed the
+predicate function.
+
+```go
+func ExamplePartition() {
+	values := fn.Seq(0, 10, 1)
+	evens, odds := fn.Partition(values, func(item, index int) bool {
+		return item%2 == 0
+	})
+
+	fmt.Println(evens)
+	fmt.Println(odds)
+	// Output:
+	// [0 2 4 6 8]
+	// [1 3 5 7 9]
 }
 ```
 

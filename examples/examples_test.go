@@ -107,6 +107,19 @@ func ExampleMin() {
 	// Output: -300
 }
 
+func ExamplePartition() {
+	values := fn.Seq(0, 10, 1)
+	evens, odds := fn.Partition(values, func(item, index int) bool {
+		return item%2 == 0
+	})
+
+	fmt.Println(evens)
+	fmt.Println(odds)
+	// Output:
+	// [0 2 4 6 8]
+	// [1 3 5 7 9]
+}
+
 func ExampleReduce() {
 	combined := fn.Reduce([]string{"a", "b", "c"}, func(result, item string, index int) string {
 		return result + item

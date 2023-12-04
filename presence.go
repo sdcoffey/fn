@@ -11,7 +11,7 @@ func present(value any) bool {
 	return !blank(value)
 }
 
-type Blankable interface {
+type blankable interface {
 	Blank() bool
 }
 
@@ -24,7 +24,7 @@ func blank(value any) bool {
 	// Special handling for error types
 	if err, isErr := value.(error); isErr {
 		return err == nil
-	} else if blankable, isBlankable := value.(Blankable); isBlankable {
+	} else if blankable, isBlankable := value.(blankable); isBlankable {
 		return blankable.Blank()
 	}
 

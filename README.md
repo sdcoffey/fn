@@ -19,7 +19,6 @@ go get github.com/sdcoffey/fn
 * [Each](#Each)
 * [First](#First)
 * [Flatten](#Flatten)
-* [GenSeq](#GenSeq)
 * [Map](#Map)
 * [Max](#Max)
 * [Min](#Min)
@@ -34,7 +33,7 @@ go get github.com/sdcoffey/fn
 
 
 ### Any
-Any returns true if any item in the slice satisfies the predicate
+Any returns true if any item in the slice satisfies the predicate.
 
 ```go
 func ExampleAny() {
@@ -50,7 +49,7 @@ func ExampleAny() {
 
 ### AnyNonZero
 AnyNonZero is a helper function that returns true if any item in the slice
-is not the zero value for its type
+is not the zero value for its type.
 
 ```go
 func ExampleAnyNonZero() {
@@ -66,9 +65,9 @@ func ExampleAnyNonZero() {
 ```
 
 ### Chunk
-Chunk takes a slice of T and returns a slice of slices of T, each of length
-chunkSize. If len(items) % chunkSize != 0, the last slice will be shorter
-than chunkSize.
+Chunk takes `[]T` and returns `[][]T`, where each subarray has a max length
+of `chunkSize`. If `len(items) % chunkSize != 0`, the last slice will be
+shorter than `chunkSize`.
 
 ```go
 func ExampleChunk() {
@@ -80,10 +79,9 @@ func ExampleChunk() {
 ```
 
 ### ChunkWhile
-ChunkWhile takes a slice of T and returns a slice of slices of T, each of
-which is a contiguous chunk of items for which `chunker` returns true.
-`chunker` is called with the item before and the item after the current
-item.
+ChunkWhile takes `[]T` and returns `[][]T`, each of which is a contiguous
+chunk of items for which `chunker` returns true. `chunker` is called with
+the item before and the item after the current item.
 
 ```go
 func ExampleChunkWhile() {
@@ -121,6 +119,7 @@ func ExampleCompactZero() {
 ```
 
 ### Each
+Each calls the given function for each item in the slice.
 
 ```go
 func ExampleEach() {
@@ -136,26 +135,30 @@ func ExampleEach() {
 
 ### First
 First will return the first value that satisfies the predicate, and the
-index at which the value was found or -1 if it was not found
+index at which the value was found (or -1 if it was not found).
 
 ```go
 func ExampleFirst() {
 	sequence := []int{-1, 0, 1, 2}
-	firstPositive, found := fn.First(sequence, func(item int, index int) bool {
+	firstPositive, index := fn.First(sequence, func(item int, index int) bool {
 		return item > 0
 	})
 
-	fmt.Println("Value found:", found)
-	fmt.Println("First positive value:", firstPositive)
+	ten, tenIndex := fn.First(sequence, func(item int, index int) bool {
+		return item == 10
+	})
+
+	fmt.Printf("value %d at index %d\n", firstPositive, index)
+	fmt.Printf("value %d at index %d\n", ten, tenIndex)
 	// Output:
-	// Value found: 2
-	// First positive value: 1
+	// value 1 at index 2
+	// value 0 at index -1
 }
 ```
 
 ### Flatten
-Flatten takes a two-dimensional array of T and flattens it down to one
-dimension, preserving the original order
+Flatten takes a 2D slice `[][]T` and flattens it to one dimension,
+preserving the original order.
 
 ```go
 func ExampleFlatten() {
@@ -163,21 +166,6 @@ func ExampleFlatten() {
 
 	fmt.Println(fn.Flatten(items))
 	// Output: [one two three four]
-}
-```
-
-### GenSeq
-GenSeq returns a chan that yields integers from [start, end), incremented by
-inc
-
-```go
-func ExampleGenSeq() {
-	intChan := fn.GenSeq(10, 0, -2)
-
-	for value := range intChan {
-		fmt.Print(value, " ")
-	}
-	// Output: 10 8 6 4 2
 }
 ```
 
@@ -199,7 +187,7 @@ func ExampleMap() {
 
 ### Max
 Max returns the maximum value in some orderable set, or the zero value of
-the set type if it has len 0
+the set type if it has len 0.
 
 ```go
 func ExampleMax() {
@@ -210,7 +198,7 @@ func ExampleMax() {
 
 ### Min
 Min returns the minimum value in some orderable set, or the zero value of
-the set type if it has len 0
+the set type if it has len 0.
 
 ```go
 func ExampleMin() {
@@ -221,7 +209,7 @@ func ExampleMin() {
 
 ### Must
 Must allows you to return one value from a function that would normally
-return a value and an error. If the error is present, Must will panic
+return a value and an error. If the error is present, Must will panic.
 
 ```go
 func ExampleMust() {
@@ -240,10 +228,9 @@ func ExampleMust() {
 ```
 
 ### Partition
-Partition takes a slice of T and a predicate function and returns two slices
-of T. The first slice contains all the items that passed the predicate
-function, and the second slice contains all the items that failed the
-predicate function.
+Partition takes `[]T` and a predicate function and returns two slices of
+`T`. The first slice contains all the items for which `pred` returned true,
+and the second slice contains all the items for which `pred` returned false.
 
 ```go
 func ExamplePartition() {
@@ -277,7 +264,7 @@ func ExampleReduce() {
 ```
 
 ### Reject
-Reject reduces a slice to only values for which `rejector` returns false
+Reject reduces a slice to only values for which `rejector` returns false.
 
 ```go
 func ExampleReject() {
@@ -295,7 +282,7 @@ func ExampleReject() {
 ```
 
 ### Select
-Select reduces a slice to only values for which `selector` returns true
+Select reduces a slice to only values for which `selector` returns true.
 
 ```go
 func ExampleSelect() {
@@ -313,7 +300,7 @@ func ExampleSelect() {
 ```
 
 ### Seq
-Seq Returns a slice of integers from [start, end), incremented by inc
+Seq Returns a slice of integers from `[start, end)`, incremented by `inc`.
 
 ```go
 func ExampleSeq() {
@@ -325,7 +312,7 @@ func ExampleSeq() {
 ```
 
 ### Sum
-Sum returns the summed value of values in the slice
+Sum returns the summed value of values in the slice.
 
 ```go
 func ExampleSum() {

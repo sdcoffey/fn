@@ -3,7 +3,7 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"fn"
+	"github.com/sdcoffey/fn"
 	"os"
 	"strings"
 )

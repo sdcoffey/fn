@@ -18,26 +18,6 @@ func Seq(start, end, inc int) []int {
 	return values
 }
 
-// genSeq returns a chan that yields integers from `[start, end)`, incremented by `inc`.
-func genSeq(start, end, inc int) <-chan int {
-	outputChan := make(chan int)
-
-	go func() {
-		defer close(outputChan)
-
-		if (end < start && inc > 0) || (start < end && inc < 0) || inc == 0 {
-			return
-		}
-
-		for hasNext(start, end, inc) {
-			outputChan <- start
-			start += inc
-		}
-	}()
-
-	return outputChan
-}
-
 func hasNext(cMin, cMax, inc int) bool {
 	if inc > 0 {
 		return cMin < cMax

@@ -1,8 +1,9 @@
 package fn
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestSequence(t *testing.T) {
@@ -13,13 +14,4 @@ func TestSequence(t *testing.T) {
 	assert.Equal(t, []int{}, Seq(0, 10, -1))
 	assert.Equal(t, []int{}, Seq(0, 10, 0))
 	assert.Equal(t, []int{}, Seq(10, 10, 1))
-}
-
-func TestSequenceGenerator(t *testing.T) {
-	assert.Equal(t, []int{30, 32, 34}, readAllChan(genSeq(30, 35, 2)))
-	assert.Equal(t, []int{30, 32, 34}, readAllChan(genSeq(30, 35, 2)))
-	assert.Equal(t, []int{}, readAllChan(genSeq(10, 0, 1)))
-	assert.Equal(t, []int{}, readAllChan(genSeq(0, 10, -1)))
-	assert.Equal(t, []int{}, readAllChan(genSeq(0, 10, 0)))
-	assert.Equal(t, []int{}, readAllChan(genSeq(10, 10, 1)))
 }

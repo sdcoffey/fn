@@ -10,6 +10,8 @@ error handling.
 go get github.com/sdcoffey/fn
 ```
 ## In this package
+* [All](#All)
+* [AllNonZero](#AllNonZero)
 * [Any](#Any)
 * [AnyNonZero](#AnyNonZero)
 * [Chunk](#Chunk)
@@ -31,6 +33,38 @@ go get github.com/sdcoffey/fn
 * [Sum](#Sum)
 * [Zip](#Zip)
 
+
+### All
+All returns true if all items in the slice satisfy the predicate.
+
+```go
+func ExampleAll() {
+	positiveInts := []int{1, 2, 3}
+	allPositive := All(positiveInts, func(item int, index int) bool {
+		return item > 0
+	})
+
+	fmt.Println(allPositive)
+	// Output: true
+}
+```
+
+### AllNonZero
+AllNonZero is a helper function that returns true if all items in the slice
+are not the zero value for their type.
+
+```go
+func ExampleAllNonZero() {
+	nonZeroInts := []string{"one", "two", "three"}
+	fmt.Println(AllNonZero(nonZeroInts))
+
+	zeroInts := []string{"", "", ""}
+	fmt.Println(AllNonZero(zeroInts))
+	// Output:
+	// true
+	// false
+}
+```
 
 ### Any
 Any returns true if any item in the slice satisfies the predicate.

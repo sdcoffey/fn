@@ -27,6 +27,27 @@ func ExampleAnyNonZero() {
 	// false
 }
 
+func ExampleAll() {
+	positiveInts := []int{1, 2, 3}
+	allPositive := All(positiveInts, func(item int, index int) bool {
+		return item > 0
+	})
+
+	fmt.Println(allPositive)
+	// Output: true
+}
+
+func ExampleAllNonZero() {
+	nonZeroInts := []string{"one", "two", "three"}
+	fmt.Println(AllNonZero(nonZeroInts))
+
+	zeroInts := []string{"", "", ""}
+	fmt.Println(AllNonZero(zeroInts))
+	// Output:
+	// true
+	// false
+}
+
 func ExampleChunk() {
 	ints := []int{1, 2, 3, 4, 5, 6, 7, 8, 9}
 
